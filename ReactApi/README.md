@@ -1,18 +1,30 @@
-# Retrieve the data on unknown IP address and print it with NodeJS
+# Retrieve the data on unknown IP address and print it with React
 
 ## Pre-requisites
 
-### Node.js
+- Node.js
 ```bash
 sudo apt install nodejs
 ```
-### Coap
+- npm
+```bash
+sudo apt install npm
+```
+- react
+```bash
+npm install -g create-react-app
+```
+- axios
+```bash
+npm install axios
+```
+- coap
 ```bash
 npm install coap
 ```
-### Express
+- coap dependency
 ```bash
-npm install express
+npm install crypto-browserify stream-browserify os-browserify
 ```
 
 ## Launch the project
@@ -20,7 +32,7 @@ npm install express
 In the project directory, you can run:
 
 ```bash
-node index.js
+npm start
 ```
 
 Runs the app in the development mode.\

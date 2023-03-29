@@ -18,6 +18,14 @@ npm install -g create-react-app
 ```bash
 npm install axios
 ```
+- coap
+```bash
+npm install coap
+```
+- coap dependency
+```bash
+npm install crypto-browserify stream-browserify os-browserify
+```
 
 ## Launch the project
 

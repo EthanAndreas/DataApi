@@ -24,24 +24,44 @@ def index():
 
         # Output the result and add another input field and button for selecting another IP address
         return '''
-            <p>Result of the request:</p>
-            <pre>{}</pre>
-            <form method="post">
-                <label for="ip_addr">Enter another IP address:</label>
-                <input type="text" id="ip_addr" name="ip_addr" required>
-                <button type="submit">Submit</button>
-            </form>
+            <div class="header">
+              <h1>Temperature Measurement</h1>
+            </div>
+            <div class="content">
+              <div class="result">
+                <p>Result of the request:</p>
+                <pre>{}</pre>
+              </div>
+              <div class="form">
+                <form method="post">
+                  <label for="ip_addr">Enter another IP address:</label>
+                  <input type="text" id="ip_addr" name="ip_addr" required>
+                  <button type="submit">Submit</button>
+                </form>
+              </div>
+            </div>
         '''.format(result.decode())
 
     # If no form has been submitted yet, display the form
     return '''
-        <form method="post">
-            <label for="ip_addr">Enter an IP address:</label>
-            <input type="text" id="ip_addr" name="ip_addr" required>
-            <button type="submit">Submit</button>
-        </form>
+        <div class="header">
+          <h1>Temperature Measurement</h1>
+        </div>
+        <div class="content">
+          <div class="form">
+            <form method="post">
+              <label for="ip_addr">Enter an IP address:</label>
+              <input type="text" id="ip_addr" name="ip_addr" required>
+              <button type="submit">Submit</button>
+            </form>
+          </div>
+        </div>
     '''
 
+# Link to the CSS file
+@app.route('/static/style.css')
+def css():
+    return app.send_static_file('style.css')
 
 if __name__ == '__main__':
     app.run()

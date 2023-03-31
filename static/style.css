@@ -1,8 +1,9 @@
 body {
-    background-image: url("../background.jpg");
-    background-repeat: no-repeat;
+    background: url('static/background.jpg') no-repeat center center fixed;
     background-size: cover;
 }
+
+
 
 /* Style the header */
 .header {
@@ -10,6 +11,21 @@ body {
     color: #fff;
     padding: 10px;
     font-family: Cambria;
+}
+
+h1 {
+    font-family: Cambria;
+    font-size: 40px;
+    text-align: left;
+    color: rgb(255, 255, 255);
+    margin-left: 10px;
+}
+
+h2 {
+    font-family: Cambria;
+    font-size: 30px;
+    text-align: left;
+    color: rgb(0, 153, 153);
 }
 
 /* Style the content section */

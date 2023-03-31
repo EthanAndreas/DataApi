@@ -21,4 +21,4 @@ python3 app.py
 
 This is a simple Python script that retrieves the data on an IP address and prints it.
 
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Open [http://localhost:5000](http://localhost:5000) to view it in your browser.

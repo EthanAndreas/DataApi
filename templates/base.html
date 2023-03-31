@@ -15,6 +15,11 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            padding: 10px;
+            background-color: rgb(0, 153, 153);
+            color: white;
+            font-family: Cambria;
+            font-size: 1.2em;
         }
 
         .menu-toggle {
@@ -84,8 +89,15 @@
 
 <body>
     <div class="header">
-        <div style="display: flex; align-items: center;">
-            <h1 style="background-color:rgb(0,153,153); margin: 0; padding: 10px;">Data recovery and simulation API</h1>
+        {% block header %}
+        <div>
+            <h1>Data recovery and simulation API</h1>
+        </div>
+        {% endblock %}
+        <div>
+            <a href="{{ url_for('home') }}" style="color:white; text-decoration:none; padding-right:10px;">Home</a>
+            <a href="{{ url_for('recovery') }}" style="color:white; text-decoration:none; padding-right:10px;">Recovery</a>
+            <a href="{{ url_for('simulation') }}" style="color:white; text-decoration:none; margin-right: 10px">Simulation</a>
         </div>
     </div>
     {% block content %}{% endblock %}

@@ -2,15 +2,11 @@
 
 {% block title %}Data simulation{% endblock %}
 
+{% block header %}<h1>Data simulation</h1>{% endblock %}
+
 {% block content %}
 <div class="content">
-    <div class="result">
-        {% if result %}
-        <p><strong>{% if ip_addr %}Result for {{ ip_addr }}{% endif %}</strong></p>
-        <pre>{{ result }}</pre>
-        {% endif %}
-    </div>
-    <div class="form">
+    <div class=" form">
         <form method="post">
             <label for="ip_addr">Simulation page</label>
         </form>

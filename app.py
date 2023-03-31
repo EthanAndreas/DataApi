@@ -1,6 +1,6 @@
-from flask import Flask, request
 import subprocess
 import socket
+from flask import Flask, request, render_template
 
 app = Flask(__name__)
 
@@ -15,6 +15,11 @@ def index():
         except socket.error:
             return 'Invalid IP address'
 
+        # Check if the IP address is reachable
+        response = subprocess.run(['ping', '-c', '0.5', ip_addr], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        if response.returncode != 0:
+            return render_template('error.html', ip_addr=ip_addr)
+
         # Run the shell command and capture the output
         command = 'coap-client -m get "coap://{}/temperature/meas1"'.format(ip_addr)
         try:
@@ -23,45 +28,15 @@ def index():
             return 'Error running command: {}'.format(str(e))
 
         # Output the result and add another input field and button for selecting another IP address
-        return '''
-            <div class="header">
-              <h1>Temperature Measurement</h1>
-            </div>
-            <div class="content">
-              <div class="result">
-                <p>Result of the request:</p>
-                <pre>{}</pre>
-              </div>
-              <div class="form">
-                <form method="post">
-                  <label for="ip_addr">Enter another IP address:</label>
-                  <input type="text" id="ip_addr" name="ip_addr" required>
-                  <button type="submit">Submit</button>
-                </form>
-              </div>
-            </div>
-        '''.format(result.decode())
+        return render_template('index.html', result=result.decode(), ip_addr=ip_addr)
 
     # If no form has been submitted yet, display the form
-    return '''
-        <div class="header">
-          <h1>Temperature Measurement</h1>
-        </div>
-        <div class="content">
-          <div class="form">
-            <form method="post">
-              <label for="ip_addr">Enter an IP address:</label>
-              <input type="text" id="ip_addr" name="ip_addr" required>
-              <button type="submit">Submit</button>
-            </form>
-          </div>
-        </div>
-    '''
+    return render_template('index.html')
 
-# Link to the CSS file
-@app.route('/static/style.css')
-def css():
-    return app.send_static_file('style.css')
+@app.route('/error')
+def error():
+    ip_addr = request.args.get('ip_addr')
+    return render_template('error.html', ip_addr=ip_addr)
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)

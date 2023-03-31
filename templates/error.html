@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>{% if ip_addr %}Error for {{ ip_addr }}{% else %}Enter an IP address{% endif %}</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+    <div class="header">
+        <h1>Data retrieve Api</h1>
+    </div>
+    <div class="content">
+        <div class="result">
+            <p><strong>Result for {{ ip_addr }}</strong></p>
+            <p style="color:red">Address not on the network</p>
+        </div>
+        <div class="form">
+            <form method="post">
+                <label for="ip_addr">Enter an IP address : </label>
+                <input type="text" id="ip_addr" name="ip_addr" required>
+                <button type="submit">Submit</button>
+            </form>
+        </div>
+    </div>
+
+</body>
+
+</html>

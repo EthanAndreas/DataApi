@@ -5,11 +5,46 @@
 {% block header %}<h1>Data simulation</h1>{% endblock %}
 
 {% block content %}
+
 <div class="content">
-    <div class=" form">
+    <div class="form">
         <form method="post">
-            <label for="ip_addr">Simulation page</label>
+            <label for="ip_addr">IP Address 1:</label>
+            <input type="text" id="ip_addr" name="ip_addr" required><br><br>
+
+            <label for="ip_addr2">IP Address 2:</label>
+            <input type="text" id="ip_addr2" name="ip_addr2" required><br><br>
+
+            <label for="ip_addr3">IP Address 3:</label>
+            <input type="text" id="ip_addr3" name="ip_addr3" required><br><br>
+
+            <label for="num_samples">Number of samples:</label>
+            <input type="number" id="num_samples" name="num_samples" min="1" max="100" value="10" required><br><br>
+
+            <button type="submit">Simulate</button>
         </form>
+    </div>
+    <div class="graph">
+        {{ graph | safe }}
+    </div>
+
+    <div class="table">
+        <table>
+            <thead>
+                <tr>
+                    <th>IP Address</th>
+                    <th>Temperature (Celsius)</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for i in range(ip_addr_list|length) %}
+                <tr>
+                    <td>{{ ip_addr_list[i] }}</td>
+                    <td>{{ results[i] }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
 </div>
 {% endblock %}

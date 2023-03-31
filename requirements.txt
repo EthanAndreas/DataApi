@@ -2,3 +2,4 @@ subprocess.run
 socket
 flask
 request
+plotly

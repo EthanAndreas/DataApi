@@ -1,5 +1,6 @@
 import subprocess
 import socket
+import plotly.graph_objs as go
 from flask import Flask, request, render_template
 
 app = Flask(__name__)
@@ -42,9 +43,16 @@ def error():
     ip_addr = request.args.get('ip_addr')
     return render_template('error.html', ip_addr=ip_addr)
 
-@app.route('/simulation')
+@app.route('/simulation', methods=['GET', 'POST'])
 def simulation():
+    
+    if request.method == 'POST':
+        ip_addr = request.form['ip_addr']
+    
+
+    # Output the results
     return render_template('simulation.html')
+
 
 @app.context_processor
 def inject_header_data():

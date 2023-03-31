@@ -2,89 +2,8 @@
 <html>
 
 <head>
-    <title>{% block title %}{% endblock %}</title>
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
-    <style>
-        body {
-            background-image: url('../static/background.jpg');
-            background-repeat: no-repeat;
-            background-size: cover;
-        }
-
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px;
-            background-color: rgb(0, 153, 153);
-            color: white;
-            font-family: Cambria;
-            font-size: 1.2em;
-        }
-
-        .menu-toggle {
-            display: none;
-        }
-
-        .menu-toggle-label {
-            font-size: 30px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-        }
-
-        .dropdown {
-            position: absolute;
-            top: 100%;
-            right: 0;
-            background-color: #f9f9f9;
-            min-width: 160px;
-            z-index: 1;
-            display: none;
-            text-align: center;
-            padding: 10px;
-        }
-
-        .dropdown a {
-            color: black;
-            padding: 10px 0;
-            text-decoration: none;
-            display: block;
-            text-align: center;
-        }
-
-        .dropdown a:hover {
-            background-color: #f1f1f1;
-        }
-
-        @media screen and (max-width: 768px) {
-            .header {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-
-            .menu-toggle {
-                display: block;
-            }
-
-            .dropdown {
-                position: static;
-                display: none;
-            }
-
-            .dropdown a {
-                padding: 8px 16px;
-            }
-
-            .menu-toggle:checked+.dropdown {
-                display: block;
-            }
-
-            .menu-toggle-label {
-                font-size: 20px;
-            }
-        }
-    </style>
+    <link rel="stylesheet" type="text/css" href='../static/style.css'>
+    <title>{% block title %}Home{% endblock %}</title>
 </head>
 
 <body>
@@ -101,6 +20,18 @@
         </div>
     </div>
     {% block content %}{% endblock %}
+
+    <footer>
+        <div class="logo">
+            <img src="../static/Siemens_logo.svg" alt="Siemens logo">
+        </div>
+        <div class="logo">
+            <img src="../static/TPS_logo.svg" alt="TPS logo">
+        </div>
+        <div class="right">
+            <p>All rights reserved. © 2023 TPS - Siemens</p>
+        </div>
+    </footer>
 </body>
 
 </html>

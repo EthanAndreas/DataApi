@@ -6,12 +6,6 @@
 
 {% block content %}
 <div class="content">
-    <div class="result">
-        {% if result %}
-        <p><strong>{% if ip_addr %}Result for {{ ip_addr }}{% endif %}</strong></p>
-        <pre>{{ result }}</pre>
-        {% endif %}
-    </div>
     <div class="form">
         <form method="post">
             <label for="ip_addr">Enter an IP address : </label>
@@ -19,5 +13,17 @@
             <button type="submit">Submit</button>
         </form>
     </div>
+    <div class="result">
+        {% if result %}
+        {% if result != -1 and result != -2 %}
+        <p><strong>{% if ip_addr %}Result for {{ ip_addr }}{% endif %}</strong></p>
+        <pre>{{ result }}</pre>
+        {% elif result != -2 %}
+        <p><strong>Result for {{ ip_addr }}</strong></p>
+        <p style="color:red">Address not on the network</p>
+        {% endif %}
+        {% endif %}
+    </div>
 </div>
+
 {% endblock %}

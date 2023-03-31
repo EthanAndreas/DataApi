@@ -1,50 +1,72 @@
 {% extends 'base.html' %}
 
-{% block title %}Data simulation{% endblock %}
+{% block title %}Data Simulation{% endblock %}
 
-{% block header %}<h1>Data simulation</h1>{% endblock %}
+{% block header %}<h1>Data Simulation</h1>{% endblock %}
 
 {% block content %}
 
 <div class="content">
     <div class="form">
         <form method="post">
-            <label for="ip_addr">IP Address 1:</label>
-            <input type="text" id="ip_addr" name="ip_addr" required><br><br>
-
-            <label for="ip_addr2">IP Address 2:</label>
-            <input type="text" id="ip_addr2" name="ip_addr2" required><br><br>
-
-            <label for="ip_addr3">IP Address 3:</label>
-            <input type="text" id="ip_addr3" name="ip_addr3" required><br><br>
-
-            <label for="num_samples">Number of samples:</label>
-            <input type="number" id="num_samples" name="num_samples" min="1" max="100" value="10" required><br><br>
-
-            <button type="submit">Simulate</button>
+            <label for="num_addr">Select number of IP Addresses:</label>
+            <select id="num_addr" name="num_addr" required>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+            </select><br><br>
+            <div id="ip-inputs">
+                <div id="ip-input" class="ip-input">
+                    <label for="ip_addr_1">IP Address 1 :</label>
+                    <input type="text" id="ip_addr_1" name="ip_addr_1" required>
+                </div>
+                <div id="ip-input-2" class="ip-input" style="display: none;">
+                    <label for="ip_addr_2">IP Address 2 :</label>
+                    <input type="text" id="ip_addr_2" name="ip_addr_2">
+                </div>
+                <div id="ip-input-3" class="ip-input" style="display: none;">
+                    <label for="ip_addr_3">IP Address 3 :</label>
+                    <input type="text" id="ip_addr_3" name="ip_addr_3">
+                </div>
+            </div>
+            <button type="submit">Submit</button>
         </form>
     </div>
-    <div class="graph">
-        {{ graph | safe }}
-    </div>
-
-    <div class="table">
-        <table>
-            <thead>
-                <tr>
-                    <th>IP Address</th>
-                    <th>Temperature (Celsius)</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for i in range(ip_addr_list|length) %}
-                <tr>
-                    <td>{{ ip_addr_list[i] }}</td>
-                    <td>{{ results[i] }}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+    <div class="result">
+        {% if result %}
+        {% for i in range(num_addr) %}
+        {% if result[i] != -1 and result[i] != -2 %}
+        <p><strong>Result for {{ ip_addr[i] }}</strong></p>
+        <pre>{{ result[i] }}</pre>
+        {% elif result[i] != -2 %}
+        <p><strong>Result for {{ ip_addr[i] }}</strong></p>
+        <p style="color:red">Address not on the network</p>
+        {% endif %}
+        {% endfor %}
+        {% endif %}
     </div>
 </div>
+
+<script>
+    const numAddrSelect = document.querySelector('#num_addr');
+    const ipInputs = document.querySelectorAll('.ip-input');
+
+    // Add event listener to num_addr select element
+    numAddrSelect.addEventListener('change', () => {
+        const numAddr = numAddrSelect.value;
+        showIpInputs(numAddr);
+    });
+
+    // Show or hide the appropriate number of IP address input fields
+    function showIpInputs(numAddr) {
+        ipInputs.forEach((input, i) => {
+            if (i < numAddr) {
+                input.style.display = 'block';
+            } else {
+                input.style.display = 'none';
+            }
+        });
+    }
+</script>
+
 {% endblock %}

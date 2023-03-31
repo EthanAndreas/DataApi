@@ -1,4 +1,4 @@
-# Retrieve the data on IP address and print it with Python
+# API with simulation and recovery data part in Python
 
 ## Prerequisites
 

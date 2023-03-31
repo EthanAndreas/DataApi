@@ -1,12 +1,18 @@
 {% extends 'base.html' %}
 
-{% block title %}{% if ip_addr %}Error for {{ ip_addr }}{% else %}Enter an IP address{% endif %}{% endblock %}
+{% block title %}
+<div class="header">
+    <h1 style="background-color:rgb(0,153,153);">Home</h1>
+</div>
+{% endblock %}
 
 {% block content %}
 <div class="content">
     <div class="result">
-        <p><strong>Result for {{ ip_addr }}</strong></p>
-        <p style="color:red">Address not on the network</p>
+        {% if result %}
+        <p><strong>{% if ip_addr %}Result for {{ ip_addr }}{% endif %}</strong></p>
+        <pre>{{ result }}</pre>
+        {% endif %}
     </div>
     <div class="form">
         <form method="post">

@@ -4,8 +4,12 @@ from flask import Flask, request, render_template
 
 app = Flask(__name__)
 
-@app.route('/', methods=['GET', 'POST'])
-def index():
+@app.route('/')
+def home():
+    return render_template('home.html')
+
+@app.route('/recovery', methods=['GET', 'POST'])
+def recovery():
     if request.method == 'POST':
         ip_addr = request.form['ip_addr']
 
@@ -28,15 +32,27 @@ def index():
             return 'Error running command: {}'.format(str(e))
 
         # Output the result and add another input field and button for selecting another IP address
-        return render_template('index.html', result=result.decode(), ip_addr=ip_addr)
+        return render_template('recovery.html', result=result.decode(), ip_addr=ip_addr)
 
     # If no form has been submitted yet, display the form
-    return render_template('index.html')
+    return render_template('recovery.html')
 
 @app.route('/error')
 def error():
     ip_addr = request.args.get('ip_addr')
     return render_template('error.html', ip_addr=ip_addr)
+
+@app.route('/simulation')
+def simulation():
+    return render_template('simulation.html')
+
+@app.context_processor
+def inject_header_data():
+    return {'pages': [
+        {'href': '/', 'text': 'Home'},
+        {'href': '/recovery', 'text': 'Recovery'},
+        {'href': '/simulation', 'text': 'Simulation'}
+    ]}
 
 if __name__ == '__main__':
     app.run(debug=True)

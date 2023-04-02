@@ -35,14 +35,24 @@
     <div class="result">
         {% if result %}
         {% for i in range(num_addr) %}
-        {% if result[i] != -1 and result[i] != -2 %}
-        <p><strong>Result for {{ ip_addr[i] }}</strong></p>
+        {% if result[i] != -1 and result[i] != -2 and result[i] != -3 and result[i] != -4 %}
+        <p><strong>{% if ip_addr[i] %}Result for {{ ip_addr[i] }}{% endif %}</strong></p>
         <pre>{{ result[i] }}</pre>
-        {% elif result[i] != -2 %}
+        {% elif result[i] != -2 and result[i] != -3 and result[i] != -4 %}
+        <p><strong>Result for {{ ip_addr[i] }}</strong></p>
+        <p style="color:red">Server unreachable</p>
+        {% elif result[i] != -3 and result[i] != -4 %}
         <p><strong>Result for {{ ip_addr[i] }}</strong></p>
         <p style="color:red">Address not on the network</p>
+        {% elif result[i] != -4 %}
+        <p><strong>Result for {{ ip_addr[i] }}</strong></p>
+        <p style="color:red">Invalid IP address</p>
         {% endif %}
         {% endfor %}
+        {% endif %}
+        {% if value %}
+        <p><strong>The value calculated is :</strong></p>
+        <p style="color:green">{{ value }}</p>
         {% endif %}
     </div>
 </div>

@@ -15,12 +15,18 @@
     </div>
     <div class="result">
         {% if result %}
-        {% if result != -1 and result != -2 %}
+        {% if result != -1 and result != -2 and result != -3 and result != -4 %}
         <p><strong>{% if ip_addr %}Result for {{ ip_addr }}{% endif %}</strong></p>
         <pre>{{ result }}</pre>
-        {% elif result != -2 %}
+        {% elif result != -2 and result != -3 and result != -4 %}
+        <p><strong>Result for {{ ip_addr }}</strong></p>
+        <p style="color:red">Server unreachable</p>
+        {% elif result != -3 and result != -4 %}
         <p><strong>Result for {{ ip_addr }}</strong></p>
         <p style="color:red">Address not on the network</p>
+        {% elif result != -4 %}
+        <p><strong>Result for {{ ip_addr }}</strong></p>
+        <p style="color:red">Invalid IP address</p>
         {% endif %}
         {% endif %}
     </div>

@@ -18,7 +18,6 @@ def request_ip_addr(ip_addr):
     
     # Test if IP address is empty
     if ip_addr == '':
-        print("done")
         return -4
     
     # Test IP address format 
@@ -70,41 +69,46 @@ def calculate_fluid_level(num_addr, result):
     # TODO: in the data packet, there is the value and the id of the sensor node
     # differentiate the value by the id of the sensor node 
     
+    value = -1
+    
     if num_addr == 1:
         # Fix density of the fluid to 1000 kg/m^3 and the gas pressure to 101325 Pa
-        return (result[0] - 101325) / (1000 * 9.81)
+        value = (result[0] - 101325) / (1000 * 9.81)
     
     if num_addr == 2:
         # Fix density of the fluid to 1000 kg/m^3
         if result[0] > result[1]:
-            return (result[0] - result[1]) / (1000 * 9.81)
+            value = (result[0] - result[1]) / (1000 * 9.81)
         else:
-            return (result[0] - result[1]) / (1000 * 9.81)
+            value = (result[0] - result[1]) / (1000 * 9.81)
     
     if num_addr == 3:
         # Calculate the density of the fluid
         if result[0] > result[1] and result[0] > result[2] and result[1] > result[2]:
             density = (result[0] - result[1]) / (9.81 * 1.5)
-            return (result[0] - result[2]) / (density * 9.81)
+            value = (result[0] - result[2]) / (density * 9.81)
         elif result[0] > result[1] and result[0] > result[2] and result[2] > result[1]:
             density = (result[0] - result[2]) / (9.81 * 1.5)
-            return (result[0] - result[1]) / (density * 9.81)
+            value = (result[0] - result[1]) / (density * 9.81)
         
         elif result[1] > result[0] and result[1] > result[2] and result[0] > result[2]:
             density = (result[1] - result[0]) / (9.81 * 1.5)
-            return (result[1] - result[2]) / (density * 9.81)
+            value = (result[1] - result[2]) / (density * 9.81)
         elif result[1] > result[0] and result[1] > result[2] and result[2] > result[0]:
             density = (result[1] - result[2]) / (9.81 * 1.5)
-            return (result[1] - result[0]) / (density * 9.81)
+            value = (result[1] - result[0]) / (density * 9.81)
         
         elif result[2] > result[0] and result[2] > result[1] and result[0] > result[1]:
             density = (result[2] - result[0]) / (9.81 * 1.5)
-            return (result[2] - result[1]) / (density * 9.81)
+            value = (result[2] - result[1]) / (density * 9.81)
         elif result[2] > result[0] and result[2] > result[1] and result[1] > result[0]:
             density = (result[2] - result[1]) / (9.81 * 1.5)
-            return (result[2] - result[0]) / (density * 9.81)
+            value = (result[2] - result[0]) / (density * 9.81)
     
-    return -1
+    if (value < 0 or value > 3):
+        return -2
+
+    return value
 
 @app.route('/')
 def home():
@@ -148,8 +152,6 @@ def simulation():
             ip_addr.append(request.form['ip_addr_1'])
             result.append(request_ip_addr(ip_addr[0]))
             
-            result[0] = 101326
-            
             # Calculate the precise value
             if (result[0] >= 0):
                 value = round(calculate_fluid_level(num_addr, result),1)
@@ -184,30 +186,15 @@ def simulation():
             result.append(request_ip_addr(ip_addr[1]))
             result.append(request_ip_addr(ip_addr[2]))
             
+            result[0] = 101326
+            result[2] = 101326
+            result[1] = 101326
+            
             # Calculate the precise value
             if (result[0] >= 0 and result[1] >= 0 and result[2] >= 0):
                 value = round(calculate_fluid_level(num_addr, result),1)
                 return render_template('simulation.html', ip_addr=ip_addr, 
                                        result=result, num_addr=num_addr, 
-                                       value=value)
-                
-            if (result[0] >= 0 and result[1] == -4 and result[2] == -4):   
-                value = round(calculate_fluid_level(1, result),1) 
-                return render_template('simulation.html', ip_addr=ip_addr, 
-                                       result=result, num_addr=1, 
-                                       value=value)
-            
-            if (result[0] >= 0 and result[1] == -4 and result[2] >= 0):
-                result[1] = result[2]
-                value = round(calculate_fluid_level(2, result),1)
-                return render_template('simulation.html', ip_addr=ip_addr, 
-                                       result=result, num_addr=2, 
-                                       value=value)
-                
-            if (result[0] >= 0 and result[1] >= 0 and result[2] == -4):
-                value = round(calculate_fluid_level(2, result),1)
-                return render_template('simulation.html', ip_addr=ip_addr, 
-                                       result=result, num_addr=2, 
                                        value=value)
             
         return render_template('simulation.html', ip_addr=ip_addr, result=result, 

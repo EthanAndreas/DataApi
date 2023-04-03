@@ -37,7 +37,7 @@
         {% for i in range(num_addr) %}
         {% if result[i] != -1 and result[i] != -2 and result[i] != -3 and result[i] != -4 %}
         <p><strong>{% if ip_addr[i] %}Result for {{ ip_addr[i] }}{% endif %}</strong></p>
-        <pre>{{ result[i] }}</pre>
+        <p style="color:green">{{ result[i] }} Pa</p>
         {% elif result[i] != -2 and result[i] != -3 and result[i] != -4 %}
         <p><strong>Result for {{ ip_addr[i] }}</strong></p>
         <p style="color:red">Server unreachable</p>
@@ -50,9 +50,14 @@
         {% endif %}
         {% endfor %}
         {% endif %}
-        {% if value %}
+        {% if value >= 0 %}
+        {% if value >= 0.1 %}
         <p><strong>The value calculated is :</strong></p>
-        <p style="color:green">{{ value }}</p>
+        <p style="color:green">{{ value }} meters</p>
+        {% else %}
+        <p><strong>The value calculated is :</strong></p>
+        <p style="color:red">The tank is empty</p>
+        {% endif %}
         {% endif %}
     </div>
 </div>

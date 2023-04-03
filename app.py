@@ -16,8 +16,6 @@ def request_ip_addr(ip_addr):
         result of the command
     """
     
-    print('IP address is', ip_addr)
-    
     # Test if IP address is empty
     if ip_addr == '':
         print("done")
@@ -53,7 +51,7 @@ def request_ip_addr(ip_addr):
         return -1
 
     # Output the result
-    return result.decode()
+    return (int)(result.decode())
 
 def calculate_fluid_level(num_addr, result):
     """ Calculate the fluid's level in the tank from the data from the sensor 
@@ -145,11 +143,13 @@ def simulation():
             ip_addr.append(request.form['ip_addr_1'])
             result.append(request_ip_addr(ip_addr[0]))
             
+            result[0] = 101326
+            
             # Calculate the precise value
             if (result[0] >= 0):
                 return render_template('simulation.html', ip_addr=ip_addr, 
                                        result=result, num_addr=num_addr, 
-                                       value=calculate_fluid_level(num_addr, result))
+                                       value=round(calculate_fluid_level(num_addr, result),1))
             
         elif num_addr == 2:
             ip_addr.append(request.form['ip_addr_1'])
@@ -161,7 +161,12 @@ def simulation():
             if (result[0] >= 0 and result[1] >= 0):
                 return render_template('simulation.html', ip_addr=ip_addr, 
                                        result=result, num_addr=num_addr, 
-                                       value=calculate_fluid_level(num_addr, result))
+                                       value=round(calculate_fluid_level(num_addr, result),1))
+                
+            if (result[0] >= 0 and result[1] == -4):
+                return render_template('simulation.html', ip_addr=ip_addr, 
+                                       result=result, num_addr=num_addr, 
+                                       value=round(calculate_fluid_level(1, result),1))
             
         else:
             ip_addr.append(request.form['ip_addr_1'])
@@ -175,7 +180,22 @@ def simulation():
             if (result[0] >= 0 and result[1] >= 0 and result[2] >= 0):
                 return render_template('simulation.html', ip_addr=ip_addr, 
                                        result=result, num_addr=num_addr, 
-                                       value=calculate_fluid_level(num_addr, result))
+                                       value=round(calculate_fluid_level(num_addr, result),1))
+                
+            if (result[0] >= 0 and result[1] == -4 and result[2] == -4):    
+                return render_template('simulation.html', ip_addr=ip_addr, 
+                                       result=result, num_addr=1, 
+                                       value=round(calculate_fluid_level(1, result),1))
+            
+            if (result[0] >= 0 and result[1] == -4 and result[2] >= 0):
+                result[1] = result[2]
+                return render_template('simulation.html', ip_addr=ip_addr, 
+                                       result=result, num_addr=2, 
+                                       value=round(calculate_fluid_level(2, result),1))
+            if (result[0] >= 0 and result[1] >= 0 and result[2] == -4):
+                return render_template('simulation.html', ip_addr=ip_addr, 
+                                       result=result, num_addr=2, 
+                                       value=round(calculate_fluid_level(2, result),1))
             
         return render_template('simulation.html', ip_addr=ip_addr, result=result, 
                                num_addr=num_addr)

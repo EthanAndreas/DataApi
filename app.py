@@ -133,6 +133,8 @@ def simulation():
     and calculate precise value with the data from the sensor nodes
     """
     
+    value = -1
+    
     # If the user has entered an IP address, request the data
     if request.method == 'POST':
         num_addr = int(request.form['num_addr'])
@@ -147,9 +149,10 @@ def simulation():
             
             # Calculate the precise value
             if (result[0] >= 0):
+                value = round(calculate_fluid_level(num_addr, result),1)
                 return render_template('simulation.html', ip_addr=ip_addr, 
                                        result=result, num_addr=num_addr, 
-                                       value=round(calculate_fluid_level(num_addr, result),1))
+                                       value=value)
             
         elif num_addr == 2:
             ip_addr.append(request.form['ip_addr_1'])
@@ -159,14 +162,16 @@ def simulation():
             
             # Calculate the precise value
             if (result[0] >= 0 and result[1] >= 0):
+                value = round(calculate_fluid_level(num_addr, result),1)
                 return render_template('simulation.html', ip_addr=ip_addr, 
                                        result=result, num_addr=num_addr, 
-                                       value=round(calculate_fluid_level(num_addr, result),1))
+                                       value=value)
                 
             if (result[0] >= 0 and result[1] == -4):
+                value = round(calculate_fluid_level(1, result),1)
                 return render_template('simulation.html', ip_addr=ip_addr, 
                                        result=result, num_addr=num_addr, 
-                                       value=round(calculate_fluid_level(1, result),1))
+                                       value=value)
             
         else:
             ip_addr.append(request.form['ip_addr_1'])
@@ -178,29 +183,34 @@ def simulation():
             
             # Calculate the precise value
             if (result[0] >= 0 and result[1] >= 0 and result[2] >= 0):
+                value = round(calculate_fluid_level(num_addr, result),1)
                 return render_template('simulation.html', ip_addr=ip_addr, 
                                        result=result, num_addr=num_addr, 
-                                       value=round(calculate_fluid_level(num_addr, result),1))
+                                       value=value)
                 
-            if (result[0] >= 0 and result[1] == -4 and result[2] == -4):    
+            if (result[0] >= 0 and result[1] == -4 and result[2] == -4):   
+                value = round(calculate_fluid_level(1, result),1) 
                 return render_template('simulation.html', ip_addr=ip_addr, 
                                        result=result, num_addr=1, 
-                                       value=round(calculate_fluid_level(1, result),1))
+                                       value=value)
             
             if (result[0] >= 0 and result[1] == -4 and result[2] >= 0):
                 result[1] = result[2]
+                value = round(calculate_fluid_level(2, result),1)
                 return render_template('simulation.html', ip_addr=ip_addr, 
                                        result=result, num_addr=2, 
-                                       value=round(calculate_fluid_level(2, result),1))
+                                       value=value)
+                
             if (result[0] >= 0 and result[1] >= 0 and result[2] == -4):
+                value = round(calculate_fluid_level(2, result),1)
                 return render_template('simulation.html', ip_addr=ip_addr, 
                                        result=result, num_addr=2, 
-                                       value=round(calculate_fluid_level(2, result),1))
+                                       value=value)
             
         return render_template('simulation.html', ip_addr=ip_addr, result=result, 
-                               num_addr=num_addr)
+                               value=value, num_addr=num_addr)
     
-    return render_template('simulation.html')
+    return render_template('simulation.html', value=value)
 
 
 @app.context_processor

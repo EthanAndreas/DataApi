@@ -133,6 +133,9 @@ def simulation():
     and calculate precise value with the data from the sensor nodes
     """
     
+    # Initialize the value variable before the others variables
+    # because if the user has not entered an IP address, the value
+    # cannot be calculated whereas it is used in the template
     value = -1
     
     # If the user has entered an IP address, request the data

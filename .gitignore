@@ -1,4 +1,7 @@
 pictures/
 __pycache__/
+__pycache__/*
 src/__pycache__/
+src/__pycache__/*
 src/config/__pycache__/
+src/config/__pycache__/*

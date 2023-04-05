@@ -10,13 +10,13 @@
     <div class="header">
         {% block header %}
         <div>
-            <h1>Data recovery and simulation API</h1>
+            <h1>Data retrieval and simulation API</h1>
         </div>
         {% endblock %}
         <div>
             <a href="{{ url_for('home') }}" style="color:white; text-decoration:none; padding-right:10px;">Home</a>
-            <a href="{{ url_for('recovery') }}" style="color:white; text-decoration:none; padding-right:10px;">Recovery</a>
-            <a href="{{ url_for('simulation') }}" style="color:white; text-decoration:none; margin-right: 10px">Simulation</a>
+            <a href="{{ url_for('read') }}" style="color:white; text-decoration:none; padding-right:10px;">Read</a>
+            <a href="{{ url_for('simulation') }}" style="color:white; text-decoration:none; margin-right: 10px">Simulate</a>
         </div>
     </div>
     {% block content %}{% endblock %}

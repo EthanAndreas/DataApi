@@ -10,9 +10,9 @@ def home():
     """
     return render_template('home.html')
 
-@app.route('/recovery', methods=['GET', 'POST'])
-def recovery():
-    """ Generate the recovery page where the user can enter an IP address and
+@app.route('/read', methods=['GET', 'POST'])
+def read():
+    """ Generate the read page where the user can enter an IP address and
     request the data from the sensor node
     """
     
@@ -21,9 +21,9 @@ def recovery():
         ip_addr = request.form['ip_addr']
         result = func.request_ip_addr(ip_addr)
 
-        return render_template('recovery.html', result=result, ip_addr=ip_addr)
+        return render_template('read.html', result=result, ip_addr=ip_addr)
 
-    return render_template('recovery.html')
+    return render_template('read.html')
 
 @app.route('/simulation', methods=['GET', 'POST'])
 def simulation():
@@ -96,8 +96,8 @@ def inject_header_data():
     
     return {'pages': [
         {'href': '/', 'text': 'Home'},
-        {'href': '/recovery', 'text': 'Recovery'},
-        {'href': '/simulation', 'text': 'Simulation'}
+        {'href': '/read', 'text': 'Read'},
+        {'href': '/simulation', 'text': 'Simulate'}
     ]}
 
 if __name__ == '__main__':

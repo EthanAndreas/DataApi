@@ -1,4 +1,6 @@
 # API with simulation and recovery data part in Python
+[![version](https://img.shields.io/badge/version-1.0.0-blue.svg)](https://github.com/EthanAndreas/DataRetriveApi)
+[![author](https://img.shields.io/badge/author-EthanAndreas-blue)](https://github.com/EthanAndreas)
 
 ## Prerequisites
 

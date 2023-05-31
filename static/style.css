@@ -19,6 +19,18 @@ h2 {
     color: rgb(0, 153, 153);
 }
 
+h2.result {
+    font-size: 30px;
+    text-align: left;
+    color: rgb(0, 153, 153);
+}
+
+h2.error {
+    font-size: 30px;
+    text-align: left;
+    color: rgb(255, 0, 0);
+}
+
 footer {
     position: fixed;
     bottom: 0;

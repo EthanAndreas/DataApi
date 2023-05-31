@@ -8,7 +8,7 @@
 <div class="content">
     <div class="form">
         <form method="post">
-            <label for="ip_addr">Enter an IP address : </label>
+            <label for="ip_addr">Enter an IP address →</label>
             <input type="text" id="ip_addr" name="ip_addr" required>
             <button type="submit">Submit</button>
         </form>
@@ -16,17 +16,17 @@
     <div class="result">
         {% if result %}
         {% if result != -1 and result != -2 and result != -3 and result != -4 %}
-        <p><strong>{% if ip_addr %}Result for {{ ip_addr }}{% endif %}</strong></p>
-        <p style="color:green">{{ result }} Pa</p>
-        {% elif result != -2 and result != -3 and result != -4 %}
-        <p><strong>Result for {{ ip_addr }}</strong></p>
+        <h2 class="result">Result</h2>
+        <p>{{ result }} Pa</p>
+        {% else %}
+        <h2 class="error">Error</h2>
+        {% if result != -2 and result != -3 and result != -4 %}
         <p style="color:red">Server unreachable</p>
         {% elif result != -3 and result != -4 %}
-        <p><strong>Result for {{ ip_addr }}</strong></p>
         <p style="color:red">Address not on the network</p>
         {% elif result != -4 %}
-        <p><strong>Result for {{ ip_addr }}</strong></p>
         <p style="color:red">Invalid IP address</p>
+        {% endif %}
         {% endif %}
         {% endif %}
     </div>

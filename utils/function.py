@@ -86,6 +86,8 @@ def request_configuration(ip_addr):
     # except subprocess.CalledProcessError as e:
     #     return const.FAILED_COMMAND
     
+    return -1
+    
 def send_pressure(num_addr, ip_addr, pressure, unit):
     """ Send pressure values to the IP addresses
     Args:
@@ -108,14 +110,20 @@ def send_pressure(num_addr, ip_addr, pressure, unit):
         # except subprocess.CalledProcessError as e:
         #     return const.FAILED_COMMAND
         
+    return -1
+        
 def request_level(ip_addr):
     """ Request the level calculated by the main device
+    args:
+        list : list of ip addresses
     """
     
-    output = request_configuration(ip_addr)
+    # Take the first ip address to request the configuration
+    output = request_configuration(ip_addr[0])
+    if output != 0:
+        return const.FAILED_REQUEST_CONF
     
-    # if the a line begins with 'main device' then retrieve the ip address
-    # the format is 'main device : <ip address>'
+    # Retrieve the ip address of the main device
     for line in output.splitlines():
         if line.startswith('main device'):
             main_device = line.split(':')[1].strip()
@@ -129,3 +137,90 @@ def request_level(ip_addr):
     
     # Output the result
     # return (int)(result.decode())
+    
+def calculate_level(enter_ip_addr, enter_pressure, unit):
+    """ Calculate the level from the pressure value
+    args:
+        list : list of ip addresses
+        list : list of pressure values
+    """
+    
+    # Take the first ip address to request the configuration
+    output = request_configuration(enter_ip_addr[0])
+    if output != 0:
+        return const.FAILED_REQUEST_CONF
+    
+    # Retrieve the number of sensors
+    for line in output.splitlines():
+        if line.startswith('num sensors'):
+            num_sensors = int(line.split(':')[1].strip())
+            
+    # Retrieve all the ip addresses
+    ip_addr = [num_sensors]
+    for line in output.splitlines() or line.startswith('secondary device'):
+        if line.startswith('main device'):
+            # Sort the ip addresses in function of their position
+            ip = line.split(':')[1].strip()
+            line = next(output)
+            position = line.split(':')[1].strip()
+            if position == 'top':
+                ip_addr[-1] = ip
+            elif position == 'bottom':
+                ip_addr[0] = ip
+            elif position == 'middle':
+                ip_addr[1] = ip
+                # Keep the height of the middle sensor
+                line = next(output)
+                height = float(line.split(':')[1].strip())
+    
+    # Convert the pressure values to the same unit in Pascal
+    for i in range(num_sensors):
+        if unit[i] == 'bar':
+            enter_pressure[i] *= 100000
+        elif unit[i] == 'psi':
+            enter_pressure[i] *= 6894.76
+    
+    # Sort the pressure values in function of their ip address
+    pressure = [num_sensors]
+    for i in range(num_sensors):
+        for j in range(num_sensors):
+            if ip_addr[i] == enter_ip_addr[j]:
+                pressure[i] = float(enter_pressure[j])
+    
+    if num_sensors == 1:
+        # Note: the sensor should be at the bottom
+        
+        if gas_pressure == 'null' or density == 'null':
+            return const.NO_GAS_PRESSURE_AND_DENSITY
+        
+        # Retrieve gas pressure and density
+        for line in output.splitlines():
+            if line.startswith('gas pressure'):
+                gas_pressure = float(line.split(':')[1].strip())
+            elif line.startswith('density'):
+                density = float(line.split(':')[1].strip())
+                
+        # Calculate the level
+        level = (pressure[0] - gas_pressure) / (density * 9.81)
+        
+    elif num_sensors == 2:
+        # Note: the sensors should be at the top and bottom and the density should be known
+        
+        if gas_pressure == 'null':
+            return const.NO_GAS_PRESSURE
+        
+        # Calculate the density
+        density = (pressure[0] - pressure[1]) / (height * 9.81)
+        level = (pressure[0] - gas_pressure) / (density * 9.81)
+        
+    elif num_sensors == 3:
+        
+        # Calculate the density
+        density = (pressure[1] - pressure[2]) / (height * 9.81)
+        level = (pressure[0] - pressure[2]) / (density * 9.81)
+        
+    return level
+        
+        
+    
+    

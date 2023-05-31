@@ -37,16 +37,20 @@ def test():
         ip_addr = []
         pressure = []
         unit = []
+        retrieve_level = const.NO_VALUE
+        calculate_level = const.NO_VALUE
         
         if num_addr > 0 and num_addr <= const.MAX_NUM_ADDR:
             for i in range(num_addr):
-                ip_addr.append(request.form['ip_addr_' + str(i)])
-                pressure.append(request.form['pressure_' + str(i)])
-                unit.append(request.form['unit_' + str(i)])
+                ip_addr.append(request.form['ip_addr_' + str(i + 1)])
+                pressure.append(request.form['pressure_' + str(i + 1)])
+                unit.append(request.form['unit_' + str(i + 1)])
         
             func.send_pressure(num_addr, ip_addr, pressure, unit)
+            retrieve_level = func.request_level(ip_addr)
+            calculate_level = func.calculate_level(ip_addr, pressure, unit)
             
-            func.request_level(ip_addr[0])
+        return render_template('test.html', retrieve_level=retrieve_level, calculate_level=calculate_level)
         
     return render_template('test.html')
 
